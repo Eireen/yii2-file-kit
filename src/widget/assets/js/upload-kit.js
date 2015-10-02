@@ -136,6 +136,9 @@
                     })
                 }
                 $this.parents('.upload-kit-item').remove();
+                if (options.multiple) {
+                    methods.renumberFiles();
+                }
                 methods.handleEmptyValue();
                 methods.checkInputVisibility();
             },
@@ -186,6 +189,15 @@
             updateOrder: function () {
                 $files.find('.upload-kit-item').each(function(index, item){
                     $(item).find('input[data-role=order]').val(index);
+                })
+            },
+            renumberFiles: function () {
+                $files.find('.upload-kit-item').each(function(index, item){
+                    var fields = ['path', 'name', 'size', 'type', 'order', 'base_url'],
+                        fieldName, i, l;
+                    for (i = 0, l = fields.length; i < l; i++) {
+                        $(this).find('[name $= "[' + fields[i] + ']"]').attr('name', options.name + '[' + index + '][' + fields[i] + ']');
+                    }
                 })
             }
         };
